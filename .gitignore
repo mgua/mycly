@@ -1,0 +1,26 @@
+# ---- Private configuration (never committed) ----
+.env
+config/desired-state.toml
+config/desired-state.*.toml
+
+# ---- Runtime state ----
+*.pyc
+__pycache__/
+*.egg-info/
+dist/
+build/
+
+# ---- mycly working data ----
+# (these are on the target machine, not in the repo,
+#  but just in case someone runs mycly inside the repo dir)
+system-report.json
+session
+snapshots/
+log/
+
+# ---- Editor state ----
+*.swp
+*.swo
+*~
+.vscode/
+.idea/

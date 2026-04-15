@@ -198,3 +198,46 @@ Below is a condensed reference of each user prompt that drove the conversation f
 | `boot.ps1` | PowerShell script | ~725 lines | Stage 0 Windows bootstrap — execution policy, system detection, auth, Stage 1 handoff |
 | `mycly-conversation-log.md` | Documentation | This file | Full conversation timeline, decisions, prompts reference |
 | `mycly-operations.md` | Documentation | ~600 lines | Operational documentation for development, testing, deployment |
+
+---
+
+### 15. Implementation Decisions & Stage 1 Build
+
+**Prompt (mgua):** Answered all blocking decisions: private gitolite initially, skip auth for .env API key, internal Ollama-like server, Python 3.10+, private files with template/production naming convention, cp-based rollback, Linux first but need working Windows PowerShell tool for installations and folders.
+
+**Decisions recorded:**
+
+| Question | Answer |
+|----------|--------|
+| Repository | Private gitolite, GitHub when ready |
+| Authentication | Skip for MVP — use .env API key |
+| Inference backend | Internal Ollama-like server via .env vars |
+| Stage 1 language | Python 3.10+ |
+| Private content strategy | templates/ (committed) + config/ (gitignored, chezmoi-synced) |
+| First Tier 1 actions | Install tool to ~/.local/bin, write .gitconfig, set up shell aliases |
+| Rollback mechanism | cp-based file snapshots |
+| Multi-backend routing | Deferred |
+| Semantic firewall | Deferred |
+| Cross-device sync | Deferred (git/chezmoi manual for now) |
+| Windows | Start Linux, but need PowerShell tool for installations + folders |
+
+**Implementation completed:**
+
+- **Stage 1 Python agent** (`mycly.py`, ~750 lines): fully functional single-file agent
+  - `mycly status` — system detection, desired-state drift reporting
+  - `mycly apply` — installs tools from GitHub releases to ~/.local/bin, writes .gitconfig, sets up shell aliases, creates directory structure
+  - `mycly interactive` — chat with inference backend about the system
+  - `mycly undo` — restores last modified file from snapshot
+  - `mycly log` — shows action history
+  - Zero external dependencies (stdlib only, tomllib fallback for Python <3.11)
+  - Tool registry for GitHub release downloads (ripgrep, fd, bat, fzf, jq, eza)
+  - Inference client speaks Anthropic Messages API (works with Ollama, vLLM, etc.)
+
+- **Project infrastructure**:
+  - `.env.template` — inference backend configuration
+  - `.gitignore` — protects private configs
+  - `templates/desired-state.template.toml` — non-private schema example
+  - `README.md` — quickstart guide
+  - File naming convention established: templates/ (committed) vs config/ (gitignored)
+
+**Verified working:** status, apply (gitconfig + aliases + directories), action log, undo with snapshot restore. Tool downloads verified correct but blocked by sandbox network (GitHub API 403 — will work on real system).

@@ -1,0 +1,82 @@
+# ============================================================
+# mycly desired-state TEMPLATE
+#
+# This is a non-private template with example values.
+# Copy to config/desired-state.toml and fill in real values.
+# The production file is gitignored.
+#
+# File naming convention:
+#   templates/desired-state.template.toml  — this file, committed
+#   config/desired-state.toml              — your real config, gitignored
+#   config/desired-state.work.toml         — work profile, gitignored
+#   config/desired-state.minimal.toml      — minimal profile, gitignored
+#
+# Private production files go to chezmoi for cross-machine sync.
+# ============================================================
+
+[identity]
+name = "Your Name"
+email = "you@example.com"
+
+[identity.email]
+primary = "you@example.com"
+# work = "you@company.com"
+
+[accounts.github]
+username = "youruser"
+sign_commits = false
+
+[shell]
+preferred = "bash"
+prompt = "oh-my-posh"
+theme = ""
+aliases = true
+completion = true
+vi_mode = false
+
+[tools]
+# Tools mycly will install to ~/.local/bin if not already present
+core = [
+    "git",
+    "tmux",
+    "fzf",
+    "ripgrep",
+    "fd",
+    "htop",
+    "mc",
+    "jq",
+    "bat",
+    "tree",
+]
+editor = "neovim"
+editor_config = ""
+dotfiles = "chezmoi"
+dotfiles_repo = ""
+
+[remote]
+ssh_keygen = true
+ssh_key_type = "ed25519"
+ssh_agent = true
+ssh_hosts = []
+
+[fonts]
+nerd_font = "JetBrainsMono"
+install_method = "user-local"
+
+[git]
+default_branch = "main"
+pull_rebase = true
+credential_helper = "store"
+
+[locale]
+lang = "en_US.UTF-8"
+keyboard = "us"
+timezone = "UTC"
+
+[files]
+organize_downloads = false
+project_root = "~/projects"
+document_structure = ["documents", "projects", "tmp"]
+
+[inference]
+# Populated from .env at runtime — do not put keys here
