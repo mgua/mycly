@@ -6,7 +6,8 @@ An AI-assisted agent that transforms any machine into your personal working envi
 
 ```bash
 # 1. Clone the repo
-git clone <your-gitolite-url>/mycly.git
+    # git remote add gh_origin https://github.com/mgua/mycly.git 
+git clone https://github.com/mgua/mycly.git 
 cd mycly
 
 # 2. Configure your inference backend
@@ -74,3 +75,4 @@ mycly/
 ## License
 
 Private / TBD
+
